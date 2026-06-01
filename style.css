@@ -1,0 +1,2688 @@
+/* ====================================================================
+   FICHIER: style.css (version finale responsive - tous bugs corrigés)
+   ==================================================================== */
+
+/* ===========================
+   1. IMPORTS & FONTS
+   =========================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap');
+
+* {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black: #111;
+  --mid: #444;
+  --light: #888;
+  --border: #ddd;
+  --red: #c0392b;
+  --bg: #fff;
+  --link-hover: #c0392b;
+}
+
+body {
+  background-color: #fafafa;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* ===========================
+   2. COULEURS PERSONNALISÉES
+   =========================== */
+.bg-news-red {
+  background-color: #cc0000;
+}
+.text-news-red {
+  color: #cc0000;
+}
+.border-news-red {
+  border-color: #cc0000;
+}
+
+/* ===========================
+   3. SCROLLBAR
+   =========================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cc0000;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #990000;
+}
+
+/* ===========================
+   4. OMBRES TEXTE
+   =========================== */
+.text-shadow-hero {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ===========================
+   5. TRENDING BAR (AVEC TICKER)
+   =========================== */
+.trending-bar {
+  background-color: #000000;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  overflow: hidden;
+  border-bottom: 1px solid #222222;
+  position: relative;
+}
+.trending-label {
+  color: #ff4500;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.trending-separator {
+  color: #555555;
+  flex-shrink: 0;
+}
+.trending-ticker {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 22px;
+}
+.trending-ticker-inner {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  white-space: nowrap;
+  animation: tickerScroll 15s linear infinite;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.trending-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+.trending-link:hover {
+  color: #ff4500;
+}
+.trending-icons {
+  display: flex;
+  gap: 15px;
+  flex-shrink: 0;
+}
+.trending-icon {
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.trending-icon:hover {
+  color: #ff4500;
+}
+
+/* ===========================
+   6. BARRE MARQUE (BRAND BAR)
+   =========================== */
+.brand-bar {
+  background-color: #ffffff;
+  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+  height: 100px;
+  overflow: visible;
+}
+.brand-bar-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.logo-img {
+  height: 230px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 230px !important;
+  min-width: auto !important;
+}
+.brand-socials {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  z-index: 15;
+}
+.brand-social-icon {
+  color: #000000;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.brand-social-icon:hover {
+  color: #ff4500;
+}
+
+/* ===========================
+   7. NAVIGATION PRINCIPALE
+   =========================== */
+.main-nav {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+  list-style: none;
+  margin: 0;
+  padding: 15px 0;
+  flex-wrap: wrap;
+}
+.nav-item {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+.nav-featured {
+  color: #ff4500;
+  position: relative;
+}
+.nav-featured::after {
+  content: "★";
+  font-size: 8px;
+  position: absolute;
+  top: -5px;
+  right: -12px;
+  color: #ff4500;
+}
+.nav-item:hover {
+  color: #ff4500;
+}
+.nav-item.active {
+  color: #ff4500;
+  font-weight: 700;
+}
+
+/* ===========================
+   8. HERO SECTION - VERSION MODERNE CORRIGÉE
+   =========================== */
+
+/* Suppression de la sidebar */
+aside {
+  display: none !important;
+}
+
+/* Ajustement du layout principal */
+main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  overflow-x: hidden !important;
+}
+
+main > .flex.flex-col {
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+
+/* Hero desktop par défaut */
+#hero-article {
+  width: 100%;
+  margin-bottom: 60px;
+}
+
+.hero-image-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.hero-image-container:hover .hero-image {
+  transform: scale(1.05);
+}
+
+.hero-title {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  color: #ff1225 !important; /* Rouge vif pour contraste sur noir */
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
+  text-transform: uppercase;
+}
+
+.hero-subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem) !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  letter-spacing: 2px !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
+  text-transform: uppercase !important;
+  opacity: 1 !important;
+}
+
+.hero-subtitle span {
+  color: #ffffff !important;
+}
+
+/* ===========================
+   8.1 HERO CARROUSEL DYNAMIQUE
+   =========================== */
+.hero-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.hero-carousel-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s ease-in-out;
+}
+
+.hero-carousel-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.hero-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation Flèches */
+.hero-carousel-prev,
+.hero-carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+
+.hero-carousel-prev:hover,
+.hero-carousel-next:hover {
+  background: rgba(200, 20, 25, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hero-carousel-prev {
+  left: 15px;
+}
+
+.hero-carousel-next {
+  right: 15px;
+}
+
+/* Points de Navigation */
+.hero-carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.hero-carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.hero-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.hero-carousel-dot.active {
+  background: #cc0000;
+  border-color: #ffffff;
+  width: 14px;
+  height: 14px;
+}
+
+/* Animation des slides */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-carousel-slide {
+  animation: slideIn 0.6s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-carousel-wrapper {
+    height: 350px;
+  }
+  
+  .hero-carousel-prev,
+  .hero-carousel-next {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .hero-carousel-prev {
+    left: 10px;
+  }
+  
+  .hero-carousel-next {
+    right: 10px;
+  }
+}
+
+.hero-image-container .absolute.bottom-0 {
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%) !important;
+  padding: 4rem 3rem 3rem 3rem !important;
+}
+
+/* Desktop large */
+@media (min-width: 1025px) {
+  .hero-image-container {
+    min-height: 85vh;
+  }
+  .hero-image {
+    min-height: 85vh;
+  }
+}
+
+/* ========== VERSION MOBILE MODERNE ========== */
+@media (max-width: 768px) {
+  main {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  #hero-article {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .hero-image-container {
+    min-height: 95vh !important;
+    height: 95vh !important;
+    max-height: 95vh !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .hero-image {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 95vh !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  
+  .hero-image-container .absolute.bottom-0 {
+    padding: 3rem 2rem 2rem 2rem !important;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%) !important;
+  }
+  
+  .hero-title {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+    font-weight: 900 !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-image-container {
+    min-height: 90vh !important;
+    height: 90vh !important;
+  }
+  
+  .hero-image {
+    min-height: 90vh !important;
+  }
+  
+  .hero-title {
+    font-size: 1.6rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.8rem !important;
+  }
+
+  .hero-image-container .absolute.bottom-0 {
+    padding: 2rem 1.2rem 1.2rem 1.2rem !important;
+  }
+}
+
+/* ===========================
+   10. BLOG CARDS - RESPONSIVE (CARTES PLUS LARGES)
+   =========================== */
+.blog-description {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.blog-card {
+  border-radius: 0 !important;
+  border: 2px solid #111 !important;
+  background: #fff;
+  box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.12) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.blog-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0px #f0145a !important;
+}
+
+.blog-card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #111 !important;
+}
+
+.blog-card-img {
+  transition: transform 0.5s ease;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.blog-card:hover .blog-card-img {
+  transform: scale(1.05);
+}
+
+.blog-title {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.05rem !important;
+  color: #111 !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.blog-card:hover .blog-title {
+  color: #cc0000;
+}
+
+.blog-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-read-more {
+  transition: gap 0.2s ease;
+}
+
+.blog-read-more:hover {
+  gap: 8px;
+}
+
+.blog-read-more:hover i {
+  transform: translateX(3px);
+}
+
+/* ===========================
+   11. TITRES DE SECTION - RESPONSIFS
+   =========================== */
+.section-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #111111;
+  border: 2px solid #1f1f1f;
+  border-left: 7px solid #e8192c;
+  display: inline-block;
+  transform: rotate(-3deg);
+  position: relative;
+  margin: 0;
+  box-shadow: none;
+  line-height: 1.2;
+}
+
+.section-title-large {
+  font-size: 3.2rem;
+  letter-spacing: 3px;
+  padding: 10px 28px 10px 16px;
+}
+
+.section-title-large .section-title-badge {
+  position: absolute;
+  top: -22px;
+  right: 12px;
+  background: #e8192c;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  display: block;
+  white-space: nowrap;
+}
+
+.section-title-small {
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  padding: 6px 24px 6px 14px;
+  border-left-width: 5px;
+}
+
+.section-title-small .section-title-badge {
+  display: none;
+}
+
+.section-title-wrapper-center {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 40px 0;
+}
+
+.section-title-wrapper-left {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0 30px 0;
+}
+
+/* Titre CANDID - Responsif */
+.candid-header {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.candid-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #111111;
+  padding: 8px 24px 8px 14px;
+  border: 2px solid #1f1f1f;
+  border-left: 5px solid #e8192c;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  box-shadow: none;
+  line-height: 1.2;
+}
+
+/* Titre FEATURED - Responsif */
+.featured-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  border-left: 6px solid #cc0000;
+  padding-left: 18px;
+}
+
+/* Titre LIFE - Responsif */
+.life-header h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #111111;
+  padding: 8px 24px 8px 14px;
+  border: 2px solid #1f1f1f;
+  border-left: 5px solid #e8192c;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  box-shadow: none;
+  line-height: 1.2;
+}
+
+/* ========== RESPONSIVE TITRES MOBILE ========== */
+@media (max-width: 768px) {
+  .section-title-large {
+    font-size: 1.8rem !important;
+    letter-spacing: 2px !important;
+    padding: 6px 20px 6px 12px !important;
+  }
+  
+  .section-title-small {
+    font-size: 1.3rem !important;
+    letter-spacing: 1.5px !important;
+    padding: 4px 18px 4px 10px !important;
+  }
+  
+  .candid-title {
+    font-size: 1.5rem !important;
+    letter-spacing: 1.5px !important;
+    padding: 6px 18px 6px 10px !important;
+  }
+  
+  .featured-title {
+    font-size: 1.5rem !important;
+    letter-spacing: 1.5px !important;
+    padding-left: 12px !important;
+    border-left-width: 4px !important;
+  }
+  
+  .life-header h1 {
+    font-size: 1.5rem !important;
+    letter-spacing: 1.5px !important;
+    padding: 6px 18px 6px 10px !important;
+  }
+  
+  .section-title-large .section-title-badge {
+    font-size: 0.6rem !important;
+    top: -16px !important;
+    right: 8px !important;
+    padding: 2px 6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title-large {
+    font-size: 1.4rem !important;
+    padding: 4px 14px 4px 8px !important;
+  }
+  
+  .candid-title {
+    font-size: 1.2rem !important;
+    padding: 5px 14px 5px 8px !important;
+  }
+  
+  .featured-title {
+    font-size: 1.2rem !important;
+  }
+  
+  .life-header h1 {
+    font-size: 1.2rem !important;
+    padding: 5px 14px 5px 8px !important;
+  }
+}
+
+/* ===========================
+   12. CANDID PHOTOS SECTION - RESPONSIVE
+   =========================== */
+.candid-photos-section {
+  margin-top: 60px;
+  padding-top: 0;
+  border-top: none;
+}
+
+.candid-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.candid-featured {
+  flex: 0 0 50%;
+  min-width: 0;
+}
+
+.candid-featured-image {
+  width: 100%;
+  height: 440px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  background-color: #f0f0f0;
+}
+
+.candid-featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.candid-featured-image:hover img {
+  transform: scale(1.03);
+}
+
+.candid-featured-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #000000;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+.candid-featured-title:hover {
+  color: #cc0000;
+}
+
+.candid-featured-excerpt {
+  font-size: 13px;
+  color: #666666;
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+.candid-right-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  min-width: 0;
+}
+
+.candid-right-card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.candid-right-card:hover {
+  transform: translateY(-3px);
+}
+
+.candid-right-card-image {
+  width: 100%;
+  height: 205px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  margin-bottom: 10px;
+}
+
+.candid-right-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.candid-right-card:hover .candid-right-card-image img {
+  transform: scale(1.05);
+}
+
+.candid-right-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+.candid-right-card:hover .candid-right-card-title {
+  color: #cc0000;
+}
+
+.candid-bottom-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 16px;
+}
+
+.candid-more-btn {
+  display: inline-block;
+  background: #e8192c;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 10px 24px;
+  text-decoration: none;
+  border: 2px solid #000;
+  transition: all 0.2s ease;
+}
+
+.candid-more-btn:hover,
+.candid-more-btn:active {
+  background: #000000;
+  color: #ffffff;
+}
+
+/* ===========================
+   13. WORLD SECTION
+   =========================== */
+.world-section {
+  margin-top: 60px;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ===========================
+   14. AD BANNER SPACE
+   =========================== */
+.ad-banner-space {
+  margin: 50px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ad-banner-inner {
+  width: 100%;
+  max-width: 728px;
+  text-align: center;
+}
+
+.ad-banner-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.ad-banner-placeholder {
+  width: 100%;
+  height: 90px;
+  background: #f5f5f5;
+  border: 1px dashed #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================
+   15. CARROUSEL FEATURED - RESPONSIVE
+   =========================== */
+.featured-carousel-section {
+  max-width: 1400px;
+  margin: 60px auto 0 auto;
+  padding: 30px 0;
+  border-top: 2px solid #eaeaea;
+  border-bottom: 2px solid #eaeaea;
+}
+
+.carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding: 0 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.carousel-nav-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 18px;
+}
+
+.nav-btn:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+.carousel-container {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 16px 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+}
+
+.carousel-card {
+  flex-shrink: 0;
+  width: 300px;
+  background: #ffffff;
+  border: 2px solid #111111;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.carousel-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #cc0000;
+}
+
+.card-image {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #111;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.carousel-card:hover .card-image img {
+  transform: scale(1.03);
+}
+
+.card-content {
+  padding: 14px;
+}
+
+.card-category {
+  font-size: 10px;
+  font-weight: 800;
+  color: #cc0000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: inline-block;
+  background: #fef0f2;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #000000;
+  line-height: 1.35;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: #999;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 8px;
+}
+
+.read-more {
+  color: #cc0000;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+
+/* ===========================
+   16. SECOND CARROUSEL (TRENDING NOW) - SOLUTION RADICALE
+   =========================== */
+
+/* Supprimer toutes les contraintes de largeur sur le parent */
+.second-carousel {
+  background-color: #000000 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  position: relative !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  margin-top: 60px !important;
+  margin-bottom: 60px !important;
+  padding: 60px 0 !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+/* Contenu centré à l'intérieur */
+.second-carousel-inner {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Forcer le titre en blanc */
+.second-carousel .featured-title {
+  color: #000000 !important;
+  border-left-color: #000000 !important;
+}
+
+/* Style des boutons */
+.second-carousel .nav-btn {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  border: 1px solid #555555 !important;
+}
+
+.second-carousel .nav-btn:hover {
+  background-color: #cc0000 !important;
+  border-color: #cc0000 !important;
+}
+
+/* Style des cartes en mode sombre */
+.second-carousel .carousel-card {
+  background-color: #111111 !important;
+  border: 1px solid #333333 !important;
+}
+
+.second-carousel .card-title {
+  color: #ffffff !important;
+}
+
+.second-carousel .card-category {
+  color: #ff6666 !important;
+  background: rgba(255, 68, 68, 0.15) !important;
+}
+
+.second-carousel .read-more {
+  color: #ff6666 !important;
+}
+
+/* Forcer le dépassement de tous les conteneurs parents */
+body,
+main,
+.container,
+.max-w-7xl,
+.mx-auto,
+.px-4,
+.sm\:px-6,
+.lg\:px-8,
+div[class*="container"],
+div[class*="max-w"] {
+  overflow-x: visible !important;
+}
+
+/* Pour desktop UNIQUEMENT */
+@media (min-width: 1024px) {
+  .second-carousel {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+  }
+}
+
+/* Version mobile - revenir à la normale */
+@media (max-width: 768px) {
+  .second-carousel {
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 30px 0 !important;
+  }
+  
+  .second-carousel-inner {
+    padding: 0 16px !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===========================
+   last part - LIFE SECTION
+   =========================== */
+.life-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 36px 0 30px 0;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.life-header hr {
+  display: none;
+}
+
+.life-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  width: 100%;
+}
+
+/* Desktop */
+@media (min-width: 721px) {
+  .life-grid {
+    display: block;
+    margin-top: 32px;
+  }
+  .bpz-header h1 {
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    background: #111;
+    padding: 6px 20px 6px 10px;
+    border-left: 5px solid #e8192c;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .row-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .row-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-featured {
+    position: relative;
+    min-height: 230px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+  }
+  .card-featured .feat-img {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #111 0%, #2a2a2a 50%, #444 100%);
+    width: 100%;
+    height: 100%;
+  }
+  .card-featured .feat-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.1) 60%, transparent 100%);
+  }
+  .card-featured .feat-body {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    padding: 20px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 230px;
+    justify-content: flex-end;
+  }
+  .card-featured .feat-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+  }
+  .card-featured .feat-meta {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .card-tyler .img {
+    height: 230px;
+    background: linear-gradient(160deg, #c0392b 0%, #e67e22 100%);
+  }
+  .card-tyler .body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .card-radio {
+    background: #111;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .card-radio .img-bg {
+    flex: 1;
+    background: linear-gradient(160deg, #333 0%, #111 100%);
+    min-height: 120px;
+  }
+  .card-radio .body {
+    padding: 16px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .card-pernod .img {
+    height: 180px;
+    background: #000000;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    padding: 8px;
+  }
+  .card-pernod .img div {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+  .card-pernod .body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .card-sorties .img {
+    height: 180px;
+    background: linear-gradient(135deg, #222, #555);
+  }
+  .card-sorties .body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: #e8192c;
+    color: #fff;
+    padding: 3px 8px;
+    width: fit-content;
+  }
+  .title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #111;
+  }
+  .title-white {
+    font-size: 1.3rem;
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff;
+  }
+  .sub-white {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .meta {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+  .main-articles,
+  .sidebar {
+    display: none;
+  }
+}
+
+/* Mobile - avec marges pour éviter les bords collés */
+@media (max-width: 720px) {
+  .life-section {
+    padding: 0 16px 40px !important;
+  }
+  
+  .life-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .article-card {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    gap: 12px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .article-card:first-child {
+    border-top: 1px solid var(--border);
+  }
+  
+  .article-card img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    display: block;
+    order: 2;
+  }
+  
+  .card-body {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .card-excerpt {
+    display: none;
+  }
+  
+  .card-tag {
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  
+  .card-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--black);
+  }
+  
+  .card-meta {
+    font-size: .65rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--light);
+  }
+  
+  .bpz-header,
+  .row-top,
+  .row-bottom,
+  .card-featured,
+  .card-tyler,
+  .card-radio,
+  .card-pernod,
+  .card-sorties {
+    display: none;
+  }
+}
+
+/* ===========================
+   17. NEWSLETTER & EDITORIAL - RESPONSIVE
+   =========================== */
+.newsletter-banner {
+  background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin: 60px 0 40px;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .newsletter-banner {
+    margin: 40px 16px !important;
+    width: calc(100% - 32px) !important;
+    padding: 20px !important;
+  }
+  
+  .newsletter-title {
+    font-size: 16px;
+  }
+  
+  .newsletter-text {
+    font-size: 12px;
+  }
+  
+  .newsletter-input {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  .newsletter-btn {
+    padding: 8px 20px;
+    font-size: 12px;
+  }
+}
+
+.newsletter-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.newsletter-text {
+  font-size: 13px;
+  color: #666666;
+}
+
+.newsletter-input {
+  border: 1px solid #dddddd;
+  border-radius: 30px;
+  padding: 10px 16px;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.newsletter-input:focus {
+  border-color: #cc0000;
+  box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.1);
+}
+
+.newsletter-btn {
+  background-color: #cc0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.newsletter-btn:hover {
+  background-color: #aa0000;
+  transform: translateY(-1px);
+}
+
+.editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  border-top: 1px solid #eaeaea;
+  padding-top: 40px;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .editorial-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    padding: 20px 16px 0 16px !important;
+    margin-top: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .editorial-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+.editorial-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #cc0000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.editorial-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.editorial-link:hover {
+  color: #cc0000;
+}
+
+/* ===========================
+   18. ESPACEMENTS ENTRE SECTIONS
+   =========================== */
+.candid-photos-section,
+.world-section,
+.featured-carousel-section,
+.second-carousel,
+.life-section,
+.newsletter-banner,
+.editorial-grid {
+  margin-top: 84px !important;
+}
+
+@media (max-width: 768px) {
+  .candid-photos-section,
+  .world-section,
+  .featured-carousel-section,
+  .second-carousel,
+  .life-section {
+    margin-top: 40px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  .candid-photos-section {
+    margin-bottom: 0 !important;
+  }
+  
+  .featured-carousel-section {
+    padding: 20px 0 !important;
+  }
+  
+  .second-carousel {
+    padding: 30px 0 !important;
+  }
+  
+  .second-carousel-inner {
+    padding: 0 16px !important;
+  }
+}
+
+/* ======= FORCE SECOND CAROUSEL FULL-WIDTH (FINAL OVERRIDE) ======= */
+@media (min-width: 1025px) {
+  .second-carousel {
+    background-color: #000 !important;
+    color: #fff !important;
+    width: 100vw !important;
+    max-width: none !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    transform: translateX(-50%) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 60px 0 !important;
+    box-sizing: border-box !important;
+    z-index: 1 !important;
+  }
+
+  .second-carousel-inner {
+    max-width: 1280px !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+    box-sizing: border-box !important;
+  }
+
+  .second-carousel .featured-title,
+  .second-carousel .trending-bar,
+  .second-carousel .trending-link {
+    color: #fff !important;
+  }
+}
+
+#hero-article {
+  margin-bottom: 60px;
+}
+
+.blog-section {
+  margin-bottom: 60px;
+}
+
+.ad-banner-space {
+  margin: 60px 0;
+}
+
+@media (max-width: 768px) {
+  .ad-banner-space {
+    margin: 40px 16px !important;
+  }
+}
+
+.candid-photos-section {
+  margin-bottom: 60px;
+}
+
+.featured-carousel-section {
+  margin-bottom: 60px;
+}
+
+.world-section {
+  margin-bottom: 60px;
+}
+
+.second-carousel {
+  margin-bottom: 60px;
+}
+
+.life-section {
+  margin-bottom: 60px;
+}
+
+.newsletter-banner {
+  margin: 60px 0;
+}
+
+.editorial-grid {
+  margin-top: 60px;
+  margin-bottom: 0;
+}
+
+.dark-footer {
+  margin-top: 60px;
+}
+
+/* ===========================
+   19. FOOTER NOIR - RESPONSIVE
+   =========================== */
+.dark-footer {
+  width: 100%;
+  background-color: #000000;
+  margin-top: 40px;
+  padding: 50px 24px 20px;
+}
+
+@media (max-width: 768px) {
+  .dark-footer {
+    padding: 40px 20px 20px !important;
+  }
+  
+  .footer-container {
+    flex-direction: column !important;
+    gap: 30px !important;
+    padding-bottom: 30px !important;
+  }
+  
+  .footer-brand {
+    text-align: center !important;
+  }
+  
+  .footer-links {
+    flex-direction: column !important;
+    gap: 25px !important;
+    text-align: center !important;
+  }
+  
+  .footer-links-col h4 {
+    margin-bottom: 12px !important;
+  }
+  
+  .footer-socials {
+    justify-content: center !important;
+    gap: 20px !important;
+  }
+  
+  .footer-bottom {
+    text-align: center !important;
+    padding-top: 20px !important;
+  }
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #222;
+}
+
+.footer-brand {
+  flex: 1;
+  min-width: 200px;
+  text-align: left;
+}
+
+.footer-logo {
+  height: 200px;
+  width: auto;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.footer-links {
+  flex: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.footer-links-col h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.footer-links-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-col li {
+  margin-bottom: 10px;
+}
+
+.footer-links-col a {
+  color: #aaaaaa;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.footer-links-col a:hover {
+  color: #cc0000;
+}
+
+.footer-socials {
+  flex: 1;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.social-icon {
+  color: #cccccc;
+  font-size: 22px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social-icon:hover {
+  color: #cc0000;
+  transform: translateY(-2px);
+}
+
+.footer-bottom {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 24px;
+}
+
+.footer-bottom p {
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 0.5px;
+}
+
+/* ===========================
+   20. RESPONSIVE GLOBAL COMPLET - CARTES PLUS LARGES
+   =========================== */
+@media (max-width: 768px) {
+  .trending-bar {
+    padding: 8px 16px;
+    gap: 10px;
+  }
+  
+  .trending-label {
+    font-size: 10px;
+  }
+  
+  .trending-link {
+    font-size: 11px;
+  }
+  
+  .trending-icons {
+    gap: 10px;
+  }
+  
+  .trending-icon {
+    font-size: 16px;
+  }
+  
+  .brand-bar {
+    height: 80px;
+    padding: 0 16px;
+  }
+  
+  .logo-img {
+    height: 160px !important;
+    min-height: 160px !important;
+  }
+  
+  .brand-socials {
+    right: 16px;
+    gap: 12px;
+  }
+  
+  .brand-social-icon {
+    font-size: 16px;
+  }
+  
+  .nav-container {
+    padding: 0 16px;
+  }
+  
+  .nav-links {
+    gap: 20px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    padding: 12px 0;
+  }
+  
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .nav-item {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  
+  .nav-featured::after {
+    right: -10px;
+    font-size: 6px;
+  }
+  
+  /* Candid layout responsive */
+  .candid-layout {
+    flex-direction: column;
+  }
+  
+  .candid-featured {
+    flex: auto;
+  }
+  
+  .candid-featured-image {
+    height: 280px;
+  }
+  
+  .candid-right-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  /* Carousel responsive - cartes plus larges */
+  .carousel-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 16px;
+  }
+  
+  .carousel-nav-buttons {
+    justify-content: flex-end;
+  }
+  
+  .carousel-card {
+    width: 280px;
+  }
+  
+  .card-image {
+    height: 200px;
+  }
+  
+  .card-title {
+    font-size: 14px;
+  }
+  
+  /* Blog cards grid responsive - plus larges */
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    padding: 0 16px !important;
+  }
+  
+  /* Les cartes blog prennent toute la largeur */
+  .blog-card {
+    width: 100%;
+    margin: 0 0 20px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .trending-bar {
+    padding: 6px 12px;
+    gap: 8px;
+  }
+  
+  .trending-label {
+    font-size: 9px;
+  }
+  
+  .trending-link {
+    font-size: 10px;
+  }
+  
+  .brand-bar {
+    height: 70px;
+  }
+  
+  .logo-img {
+    height: 130px !important;
+    min-height: 130px !important;
+  }
+  
+  .nav-links {
+    gap: 14px;
+  }
+  
+  .nav-item {
+    font-size: 10px;
+  }
+  
+  .candid-featured-image {
+    height: 200px;
+  }
+  
+  .candid-featured-title {
+    font-size: 15px;
+  }
+  
+  .candid-right-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .carousel-card {
+    width: 260px;
+  }
+  
+  .card-image {
+    height: 180px;
+  }
+  
+  .card-title {
+    font-size: 13px;
+  }
+}
+
+/* ===========================
+   21. AJOUTS POUR SIDEBAR DESKTOP
+   =========================== */
+@media (min-width: 1024px) {
+  #hero-article .hero-image-container {
+    height: 520px !important;
+  }
+  
+  #sidebar-news {
+    height: 454px !important;
+    overflow-y: auto;
+  }
+  
+  #sidebar-news::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  #sidebar-news::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+  
+  #sidebar-news::-webkit-scrollbar-thumb {
+    background: #cc0000;
+    border-radius: 0;
+  }
+}
+
+/* =/* ============================================
+   FORCER TOUTES LES SECTIONS À LA MÊME LARGEUR SUR MOBILE
+   ============================================ */
+
+@media (max-width: 768px) {
+  
+  /* 1. Conteneur principal - forcer la largeur */
+  main {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  /* 2. Toutes les sections principales - MÊME LARGEUR ET PADDING */
+  .mt-28.pt-8,           /* Section Tendance */
+  .candid-photos-section, /* Section Candid Photos */
+  .world-section,         /* Section World */
+  .featured-carousel-section, /* Section Featured */
+  .second-carousel,       /* Section Trending Now */
+  .life-section,          /* Section Life */
+  .newsletter-banner,     /* Newsletter */
+  .editorial-grid {       /* Editorial Grid */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* 3. PADDING UNIFORME DE 16px pour toutes */
+  .mt-28.pt-8,
+  .candid-photos-section,
+  .world-section,
+  .life-section,
+  .editorial-grid {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  /* 4. Exceptions pour les carrousels (leur contenu interne) */
+  .featured-carousel-section .carousel-header,
+  .second-carousel .second-carousel-inner {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* 5. Newsletter - marges au lieu de padding */
+  .newsletter-banner {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+    width: calc(100% - 32px) !important;
+  }
+  
+  /* 6. GRILLE DES CARTES BLOG (TENDANCE) */
+  .mt-28.pt-8 > .grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* 7. CARTES BLOG - PLEINE LARGEUR */
+  .blog-card {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  /* 8. CANDID PHOTOS - LAYOUT */
+  .candid-layout {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 24px !important;
+  }
+  
+  .candid-featured {
+    width: 100% !important;
+  }
+  
+  .candid-featured-image {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9 !important;
+  }
+  
+  .candid-right-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+  
+  .candid-right-card-image {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9 !important;
+  }
+  
+  /* 9. WORLD SECTION - hérite des mêmes styles */
+  .world-section .candid-layout {
+    flex-direction: column !important;
+  }
+  
+  .world-section .candid-featured-image {
+    width: 100% !important;
+    aspect-ratio: 16/9 !important;
+  }
+  
+  /* 10. CARROUSELS */
+  .carousel-card {
+    width: 260px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .card-image {
+    width: 100% !important;
+    height: 160px !important;
+  }
+  
+  /* 11. TITRES UNIFORMES */
+  .candid-title,
+  .featured-title,
+  .life-header h1,
+  .section-title-large {
+    font-size: 1.3rem !important;
+    padding: 6px 16px 6px 10px !important;
+  }
+}
+
+/* ============================================
+   TRÈS PETITS ÉCRANS (MOINS DE 480px)
+   ============================================ */
+@media (max-width: 480px) {
+  .candid-right-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .carousel-card {
+    width: 240px !important;
+  }
+  
+  .candid-title,
+  .featured-title,
+  .life-header h1 {
+    font-size: 1.1rem !important;
+  }
+}==========================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===========================
+   24. MENU HAMBURGER MOBILE
+   =========================== */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.2s ease;
+  z-index: 100;
+}
+
+.mobile-menu-toggle:hover {
+  color: #ff4500;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 99;
+  overflow-y: auto;
+  padding-top: 60px;
+}
+
+.mobile-menu.active {
+  display: block;
+}
+
+.mobile-menu-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-item {
+  display: block;
+  padding: 16px 24px;
+  color: #000;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e5e5e5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mobile-menu-item:hover,
+.mobile-menu-item.active {
+  background-color: #f5f5f5;
+  color: #ff4500;
+}
+
+/* Navigation desktop cachée sur mobile */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav-container {
+    justify-content: flex-start !important;
+  }
+
+  .main-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+}
+
+/* Navigation mobile cachée sur desktop */
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+
+  .nav-links {
+    display: flex !important;
+  }
+}
+
+/* ===========================
+   25. RESPONSIVE TITRE TENDANCE
+   =========================== */
+/* Mobile - Réduction du titre TENDANCE */
+@media (max-width: 768px) {
+  .mt-28.pt-8 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    margin-top: 2rem !important;
+  }
+
+  .mt-28.pt-8 > div[style*="justify-content"] {
+    justify-content: center !important;
+    padding: 0 16px !important;
+    margin: 0 -16px !important;
+  }
+
+  .mt-28.pt-8 h2 {
+    font-size: 2.4rem !important;
+    padding: 8px 20px 8px 14px !important;
+    letter-spacing: 2.5px !important;
+    transform: rotate(-2deg) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .mt-28.pt-8 h2 span {
+    font-size: 0.65rem !important;
+    top: -16px !important;
+    right: 10px !important;
+    padding: 3px 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mt-28.pt-8 h2 {
+    font-size: 1.8rem !important;
+    padding: 7px 14px 7px 10px !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  .mt-28.pt-8 h2 span {
+    font-size: 0.55rem !important;
+    top: -13px !important;
+  }
+}
+
+
+/* ============================================
+   MENU MOBILE - CORRECTION FINALE
+   ============================================ */
+
+/* Bouton hamburger */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    z-index: 1002 !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+  
+  .mobile-menu-toggle i {
+    font-size: 28px !important;
+    color: #000000 !important;
+  }
+  
+  /* Cacher les icônes sociales sur mobile */
+  .brand-socials {
+    display: none !important;
+  }
+  
+  /* Ajuster la barre */
+  .brand-bar {
+    position: relative !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 80px !important;
+  }
+  
+  .brand-bar-left {
+    flex: none !important;
+  }
+  
+  .logo-img {
+    height: 100px !important;
+  }
+}
+
+/* Overlay (fond sombre) */
+.mobile-menu-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  z-index: 998 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+
+.mobile-menu-overlay.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Menu latéral - glisse de DROITE vers GAUCHE */
+.mobile-menu {
+  position: fixed !important;
+  top: 0 !important;
+  right: -100% !important;
+  width: 85% !important;
+  max-width: 320px !important;
+  height: 100vh !important;
+  background: #ffffff !important;
+  z-index: 999 !important;
+  transition: right 0.3s ease-in-out !important;
+  overflow-y: auto !important;
+  padding: 0 !important;
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mobile-menu.active {
+  right: 0 !important;
+}
+
+/* UN SEUL bouton de fermeture X */
+.mobile-menu-close {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  background: none !important;
+  border: none !important;
+  font-size: 24px !important;
+  cursor: pointer !important;
+  color: #111 !important;
+  z-index: 1001 !important;
+  padding: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Liste des liens - centrée */
+.mobile-menu-links {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 80px 0 0 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+/* Style des liens */
+.mobile-menu-item {
+  display: block !important;
+  padding: 14px 24px !important;
+  color: #111 !important;
+  text-decoration: none !important;
+  font-size: 1.2rem !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  text-align: center !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.mobile-menu-item:hover,
+.mobile-menu-item.active {
+  background: #cc0000 !important;
+  color: #ffffff !important;
+}
+
+/* Animation des liens */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.mobile-menu.active .mobile-menu-item {
+  animation: slideInFromLeft 0.3s ease forwards !important;
+  opacity: 0;
+}
+
+.mobile-menu.active .mobile-menu-item:nth-child(1) { animation-delay: 0.05s; }
+.mobile-menu.active .mobile-menu-item:nth-child(2) { animation-delay: 0.1s; }
+.mobile-menu.active .mobile-menu-item:nth-child(3) { animation-delay: 0.15s; }
+.mobile-menu.active .mobile-menu-item:nth-child(4) { animation-delay: 0.2s; }
+.mobile-menu.active .mobile-menu-item:nth-child(5) { animation-delay: 0.25s; }
+.mobile-menu.active .mobile-menu-item:nth-child(6) { animation-delay: 0.3s; }
+.mobile-menu.active .mobile-menu-item:nth-child(7) { animation-delay: 0.35s; }
+.mobile-menu.active .mobile-menu-item:nth-child(8) { animation-delay: 0.4s; }
+
+/* EMPÊCHER LE SCROLL QUAND MENU OUVERT */
+body.menu-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Desktop : cacher le menu mobile */
+@media (min-width: 769px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+  
+  .mobile-menu,
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+}
+
+
+/* ============================================
+   BLOQUER LE SCROLL QUAND MENU OUVERT
+   ============================================ */
+
+/* Quand le menu est ouvert, on bloque le scroll sur body ET html */
+body.menu-open,
+html.menu-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Le menu lui-même doit avoir un scroll interne si besoin */
+.mobile-menu {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+
+.dark-footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 40px 20px 20px !important;
+}
+
+.footer-container {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}

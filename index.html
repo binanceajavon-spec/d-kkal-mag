@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Newsflash - Actualités | The Shade Room Style</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <style>
+    /* Styles additionnels pour la cohérence */
+    .trending-bar a, .candid-more-btn, .read-more {
+      transition: all 0.2s ease;
+    }
+    .candid-more-btn:hover {
+      background: #cc0000;
+      color: white;
+      border-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======================== TRENDING BAR ======================== -->
+<div class="trending-bar">
+  <i class="ti ti-menu-2"></i>
+  <i class="ti ti-flame"></i>
+  <span class="trending-label">Trending</span>
+  <span class="trending-separator">|</span>
+  <div class="trending-ticker">
+    <div class="trending-ticker-inner">
+      <a href="categorie.html?cat=Actu" class="trending-link">Actualité du moment</a>
+      <a href="categorie.html?cat=Célébrités" class="trending-link">Célébrités</a>
+      <a href="categorie.html?cat=Mode & Style" class="trending-link">Mode & Style</a>
+      <a href="categorie.html?cat=Musique" class="trending-link">Musique</a>
+      <a href="categorie.html?cat=Actu" class="trending-link">Actualité du moment</a>
+      <a href="categorie.html?cat=Célébrités" class="trending-link">Célébrités</a>
+      <a href="categorie.html?cat=Mode & Style" class="trending-link">Mode & Style</a>
+      <a href="categorie.html?cat=Musique" class="trending-link">Musique</a>
+    </div>
+  </div>
+  <div class="trending-icons">
+    <i class="ti ti-search trending-icon"></i>
+    <i class="ti ti-moon trending-icon"></i>
+  </div>
+</div>
+
+<!-- ======================== BARRE MARQUE ======================== -->
+<div class="brand-bar">
+  <div class="brand-bar-left">
+    <img src="images/dekalé.png" alt="Logo" class="logo-img">
+  </div>
+  <div class="brand-socials">
+    <i class="ti ti-brand-facebook brand-social-icon"></i>
+    <i class="ti ti-brand-x brand-social-icon"></i>
+    <i class="ti ti-brand-instagram brand-social-icon"></i>
+    <i class="ti ti-brand-youtube brand-social-icon"></i>
+    <i class="ti ti-brand-tiktok brand-social-icon"></i>
+  </div>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
+    <i class="ti ti-menu-2"></i>
+  </button>
+</div>
+
+<!-- Overlay -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+<!-- Menu Mobile -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileMenuClose">
+    <i class="ti ti-x"></i>
+  </button>
+  <ul class="mobile-menu-links">
+    <li><a href="index.html" class="mobile-menu-item active">Accueil</a></li>
+    <li><a href="categorie.html?cat=Célébrités" class="mobile-menu-item">Célébrités</a></li>
+    <li><a href="categorie.html?cat=Actu" class="mobile-menu-item">News</a></li>
+    <li><a href="categorie.html?cat=Mode & Style" class="mobile-menu-item">Mode & Style</a></li>
+    <li><a href="categorie.html?cat=Tendance" class="mobile-menu-item">Tendances</a></li>
+    <li><a href="categorie.html?cat=Musique" class="mobile-menu-item">Musique</a></li>
+    <li><a href="categorie.html?cat=Sport" class="mobile-menu-item">Sport</a></li>
+    <li><a href="categorie.html?cat=Fait divers" class="mobile-menu-item">Event / Fait divers</a></li>
+    <li><a href="categorie.html?cat=Politique" class="mobile-menu-item">Politique</a></li>
+  </ul>
+</div>
+
+<!-- ======================== NAVIGATION DESKTOP ======================== -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-item active">Accueil</a></li>
+      <li><a href="categorie.html?cat=Célébrités" class="nav-item">Célébrités</a></li>
+      <li><a href="categorie.html?cat=Actu" class="nav-item">News</a></li>
+      <li><a href="categorie.html?cat=Mode & Style" class="nav-item">Mode & Style</a></li>
+      <li><a href="categorie.html?cat=Tendance" class="nav-item nav-featured">Tendances</a></li>
+      <li><a href="categorie.html?cat=Musique" class="nav-item">Musique</a></li>
+      <li><a href="categorie.html?cat=Sport" class="nav-item">Sport</a></li>
+      <li><a href="categorie.html?cat=Fait divers" class="nav-item nav-featured">Event / Fait divers</a></li>
+      <li><a href="categorie.html?cat=Politique" class="nav-item">Politique</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ======================== MAIN CONTENT ======================== -->
+<main class="max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-col lg:flex-row gap-8">
+    <!-- HERO ARTICLE - CARROUSEL DYNAMIQUE -->
+    <section class="lg:w-2/3" id="hero-article">
+      <div class="relative group cursor-pointer overflow-hidden hero-image-container hero-carousel-wrapper">
+        <div class="hero-carousel-track">
+          <div class="hero-carousel-slide">
+            <img alt="Dékalé Magazine Image 1" class="w-full h-full object-cover hero-image" src="images/images1.jpg" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6 text-white w-full">
+              <div class="hero-subtitle flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest mb-2">
+                <span>Actualité</span>
+                <span>•</span>
+                <span>May 28, 2026</span>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold leading-tight hero-title">Découvrez les Dernières Tendances Dékalé</h2>
+            </div>
+          </div>
+          <div class="hero-carousel-slide">
+            <img alt="Dékalé Magazine Image 2" class="w-full h-full object-cover hero-image" src="images/images2.jpg" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6 text-white w-full">
+              <div class="hero-subtitle flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest mb-2">
+                <span>Lifestyle</span>
+                <span>•</span>
+                <span>May 28, 2026</span>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold leading-tight hero-title">Mode & Style à La Une</h2>
+            </div>
+          </div>
+          <div class="hero-carousel-slide">
+            <img alt="Dékalé Magazine Image 3" class="w-full h-full object-cover hero-image" src="images/images3.jpg" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6 text-white w-full">
+              <div class="hero-subtitle flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest mb-2">
+                <span>Culture</span>
+                <span>•</span>
+                <span>May 28, 2026</span>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold leading-tight hero-title">L'Univers Dékalé en Images</h2>
+            </div>
+          </div>
+        </div>
+        <button class="hero-carousel-prev" aria-label="Previous slide"><i class="ti ti-chevron-left"></i></button>
+        <button class="hero-carousel-next" aria-label="Next slide"><i class="ti ti-chevron-right"></i></button>
+        <div class="hero-carousel-dots">
+          <button class="hero-carousel-dot active" data-slide="0" aria-label="Slide 1"></button>
+          <button class="hero-carousel-dot" data-slide="1" aria-label="Slide 2"></button>
+          <button class="hero-carousel-dot" data-slide="2" aria-label="Slide 3"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDEBAR NEWS -->
+    <aside class="lg:w-1/3 flex flex-col gap-4">
+      <h2 class="sidebar-news-title">NOUVEAUTÉ</h2>
+      <div id="sidebar-news"></div>
+    </aside>
+  </div>
+
+  <!-- SECTION 1 : TENDANCE -->
+  <div class="mt-28 pt-8 border-t-2 border-gray-100">
+    <div class="flex items-center justify-center mb-12" style="margin-bottom: 4rem !important;">
+      <h2 style="font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 900; font-size: 3.2rem; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; background-color: #111111; padding: 10px 28px 10px 16px; border: 2px solid #1f1f1f; border-left: 7px solid #e8192c; border-radius: 0; transform: rotate(-3deg); display: inline-block; position: relative;">
+        TENDANCE
+        <span style="position: absolute; top: -22px; right: 12px; background: #e8192c; color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 2.5px; font-weight: 700; padding: 3px 10px;">À LA UNE</span>
+      </h2>
+    </div>
+    <p class="text-gray-500 mb-8 max-w-2xl text-center mx-auto">Les tendances mode, culture et lifestyle — vue sous un angle différent.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="trendanceGrid"></div>
+  </div>
+
+  <!-- AD BANNER -->
+  <div class="ad-banner-space my-8">
+    <div class="ad-banner-inner">
+      <span class="ad-banner-label">ADVERTISEMENT</span>
+      <div class="ad-banner-placeholder">
+        <i class="fas fa-ad" style="font-size: 2rem; color: #bbb; margin-bottom: 8px;"></i>
+        <span style="color: #aaa; font-size: 13px; letter-spacing: 1px;">YOUR AD HERE — 728×90</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 : MUSIQUE -->
+  <div class="candid-photos-section">
+    <div class="candid-header">
+      <h2 class="candid-title">MUSIQUE</h2>
+    </div>
+    <div class="candid-layout" id="musiqueLayout">
+      <div class="candid-featured">
+        <div class="candid-featured-image"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600&h=500&fit=crop" alt="Featured"></div>
+        <a href="#" class="candid-featured-title">Chargement...</a>
+        <p class="candid-featured-excerpt"></p>
+      </div>
+      <div class="candid-right-grid">
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+      </div>
+    </div>
+    <div class="candid-bottom-bar">
+      <a href="categorie.html?cat=Musique" class="candid-more-btn">PLUS DE MUSIQUE</a>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : ACTU (carrousel) -->
+  <div class="featured-carousel-section">
+    <div class="carousel-header">
+      <h2 class="featured-title">ACTU</h2>
+      <div class="carousel-nav-buttons">
+        <button class="nav-btn" id="scrollLeftBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="scrollRightBtn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="carousel-container" id="carouselContainer">
+      <div class="carousel-track" id="carouselTrack"></div>
+    </div>
+  </div>
+
+  <!-- AD BANNER -->
+  <div class="ad-banner-space my-8">
+    <div class="ad-banner-inner">
+      <span class="ad-banner-label">ADVERTISEMENT</span>
+      <div class="ad-banner-placeholder">
+        <i class="fas fa-ad" style="font-size: 2rem; color: #bbb; margin-bottom: 8px;"></i>
+        <span style="color: #aaa; font-size: 13px; letter-spacing: 1px;">YOUR AD HERE — 728×90</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 : SPORT -->
+  <div class="world-section candid-photos-section">
+    <div class="candid-header">
+      <h2 class="candid-title">SPORT</h2>
+    </div>
+    <div class="candid-layout" id="sportLayout">
+      <div class="candid-featured">
+        <div class="candid-featured-image"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=500&fit=crop" alt="Featured"></div>
+        <a href="#" class="candid-featured-title">Chargement...</a>
+        <p class="candid-featured-excerpt"></p>
+      </div>
+      <div class="candid-right-grid">
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+        <div class="candid-right-card"><div class="candid-right-card-image"><img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop" alt="Card"></div><a href="#" class="candid-right-card-title">Chargement...</a></div>
+      </div>
+    </div>
+    <div class="candid-bottom-bar">
+      <a href="categorie.html?cat=Sport" class="candid-more-btn">PLUS DE SPORT</a>
+    </div>
+  </div>
+
+  <!-- SECTION 5 : EVENT / FAIT DIVERS (carrousel) -->
+  <div class="featured-carousel-section second-carousel">
+    <div class="second-carousel-inner">
+      <div class="carousel-header">
+        <h2 class="featured-title">EVENT / FAIT DIVERS</h2>
+        <div class="carousel-nav-buttons">
+          <button class="nav-btn carousel-prev" id="carouselPrev" data-carousel="carousel2"><i class="fas fa-chevron-left"></i></button>
+          <button class="nav-btn carousel-next" id="carouselNext" data-carousel="carousel2"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+      <div class="carousel-container" id="carouselContainer2">
+        <div class="carousel-track" id="carouselTrack2"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- ======================== POLITIQUE (VERSION DESKTOP COMPLÈTE) ======================== -->
+<div class="life-section">
+  <div class="life-header">
+    <h1>POLITIQUE</h1>
+    <hr/>
+  </div>
+
+  <!-- STRUCTURE DESKTOP COMPLÈTE -->
+  <div class="bpz-header"></div>
+
+  <div class="row-top">
+    <!-- Carte principale featured -->
+    <div class="card-featured" id="politiqueFeatured">
+      <div class="feat-img"></div>
+      <div class="feat-overlay"></div>
+      <div class="feat-body">
+        <div class="feat-title">Chargement...</div>
+        <span class="tag">Politique</span>
+        <div class="feat-meta"></div>
+      </div>
+    </div>
+
+    <!-- Carte secondaire -->
+    <div class="card card-tyler" id="politiqueCard2">
+      <div class="img"></div>
+      <div class="body">
+        <div class="title">Chargement...</div>
+        <span class="tag">Politique</span>
+        <div class="meta"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-bottom" id="politiqueRowBottom">
+    <div class="card card-radio" id="politiqueCard3">
+      <div class="img-bg"></div>
+      <div class="body">
+        <div class="title-white">Chargement...</div>
+        <div class="sub-white"></div>
+      </div>
+    </div>
+    <div class="card card-pernod" id="politiqueCard4">
+      <div class="img"><div></div><div></div><div></div><div></div></div>
+      <div class="body">
+        <div class="title">Chargement...</div>
+        <span class="tag">Politique</span>
+        <div class="meta"></div>
+      </div>
+    </div>
+    <div class="card card-sorties" id="politiqueCard5">
+      <div class="img"></div>
+      <div class="body">
+        <div class="title">Chargement...</div>
+        <span class="tag">Politique</span>
+        <div class="meta"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Version mobile (cachée sur desktop) -->
+  <div class="life-grid">
+    <div class="main-articles" id="politiqueMainArticles">
+      <a class="article-card" href="#"><img class="img-placeholder" src="https://picsum.photos/seed/gap/400/267" alt="Article"/><div class="card-body"><div class="card-tag">Politique</div><div class="card-title">Chargement...</div><div class="card-excerpt"></div><div class="card-meta"><span>Par Staff</span> &nbsp;·&nbsp; Récent</div></div></a>
+      <a class="article-card" href="#"><img src="https://picsum.photos/seed/antarctica/400/267" alt="Article"/><div class="card-body"><div class="card-tag">Politique</div><div class="card-title">Chargement...</div><div class="card-excerpt"></div><div class="card-meta"><span>Par Staff</span> &nbsp;·&nbsp; Récent</div></div></a>
+      <a class="article-card" href="#"><img src="https://picsum.photos/seed/cybertruck/400/267" alt="Article"/><div class="card-body"><div class="card-tag">Politique</div><div class="card-title">Chargement...</div><div class="card-excerpt"></div><div class="card-meta"><span>Par Staff</span> &nbsp;·&nbsp; Récent</div></div></a>
+      <a class="article-card" href="#"><img src="https://picsum.photos/seed/trex/400/267" alt="Article"/><div class="card-body"><div class="card-tag">Politique</div><div class="card-title">Chargement...</div><div class="card-excerpt"></div><div class="card-meta"><span>Par Staff</span> &nbsp;·&nbsp; Récent</div></div></a>
+      <a class="article-card" href="#"><img src="https://picsum.photos/seed/loneliness/400/267" alt="Article"/><div class="card-body"><div class="card-tag">Politique</div><div class="card-title">Chargement...</div><div class="card-excerpt"></div><div class="card-meta"><span>Par Staff</span> &nbsp;·&nbsp; Récent</div></div></a>
+    </div>
+    <aside class="sidebar"></aside>
+  </div>
+
+  <div class="candid-bottom-bar" style="margin-top: 20px;">
+    <a href="categorie.html?cat=Politique" class="candid-more-btn">PLUS DE POLITIQUE</a>
+  </div>
+</div>
+
+</main>   <!-- fermeture de main -->
+
+<footer class="dark-footer">...</footer>
+
+
+
+<!-- ======================== FOOTER ======================== -->
+<footer class="dark-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <img src="images/dekalé.png" alt="Newsflash" class="footer-logo">
+      <p class="footer-tagline">L'actualité people, tendances et culture pop.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-links-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="categorie.html?cat=Célébrités">Célébrités</a></li>
+          <li><a href="categorie.html?cat=Actu">News</a></li>
+          <li><a href="categorie.html?cat=Mode & Style">Mode & Style</a></li>
+          <li><a href="categorie.html?cat=Tendance">Tendances</a></li>
+          <li><a href="categorie.html?cat=Musique">Musique</a></li>
+          <li><a href="categorie.html?cat=Sport">Sport</a></li>
+          <li><a href="categorie.html?cat=Fait divers">Event / Fait divers</a></li>
+          <li><a href="categorie.html?cat=Politique">Politique</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>À propos</h4>
+        <ul><li><a href="#">Qui sommes-nous</a></li><li><a href="#">Publicité</a></li><li><a href="#">Carrières</a></li><li><a href="#">Contact</a></li></ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>Légal</h4>
+        <ul><li><a href="#">Mentions légales</a></li><li><a href="#">Confidentialité</a></li><li><a href="#">Cookies</a></li><li><a href="#">CGU</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-socials">
+      <a href="#" class="social-icon"><i class="ti ti-brand-facebook"></i></a>
+      <a href="#" class="social-icon"><i class="ti ti-brand-x"></i></a>
+      <a href="#" class="social-icon"><i class="ti ti-brand-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="ti ti-brand-youtube"></i></a>
+      <a href="#" class="social-icon"><i class="ti ti-brand-tiktok"></i></a>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Newsflash Publishing Group. Tous droits réservés.</p></div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    
+    // 1. HERO
+    const featured = await getFeaturedArticles();
+    if (featured.length > 0) {
+      const slides = document.querySelectorAll('#hero-article .hero-carousel-slide');
+      featured.slice(0, slides.length).forEach((article, index) => {
+        const slide = slides[index];
+        if (!slide) return;
+        const img = slide.querySelector('.hero-image');
+        const title = slide.querySelector('.hero-title');
+        const categorySpan = slide.querySelector('.flex.items-center span:first-child');
+        const dateSpan = slide.querySelectorAll('.flex.items-center span')[2];
+        if (img) img.src = article.image;
+        if (title) title.textContent = article.title;
+        if (categorySpan) categorySpan.textContent = article.category;
+        if (dateSpan) dateSpan.textContent = article.date || '';
+        slide.style.cursor = 'pointer';
+        slide.onclick = () => window.location.href = `article.html?id=${article.id}`;
+      });
+    }
+    
+    // 2. SIDEBAR
+    const latest = await getLatestArticles(5);
+    const sidebar = document.getElementById('sidebar-news');
+    if (sidebar && latest.length > 0) {
+      sidebar.innerHTML = '';
+      latest.forEach(article => {
+        sidebar.innerHTML += `
+          <article class="flex gap-4 group cursor-pointer sidebar-item" onclick="window.location.href='article.html?id=${article.id}'">
+            <div class="w-28 h-20 flex-shrink-0 overflow-hidden rounded-md bg-gray-100">
+              <img src="${article.image}" class="w-full h-full object-cover sidebar-img" loading="lazy">
+            </div>
+            <div class="flex flex-col justify-center">
+              <div class="flex items-center space-x-2 text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                <span>${article.category}</span><span>•</span><span>${article.date || ''}</span>
+              </div>
+              <h3 class="text-[13px] font-bold text-gray-800 leading-snug">${article.title}</h3>
+            </div>
+          </article>
+        `;
+      });
+    }
+
+   // 3. TENDANCE - 6 cartes (3 en haut + 3 en bas)
+const trendance = await getArticlesByCategory('Tendance');
+const trendanceGrid = document.getElementById('trendanceGrid');
+if (trendanceGrid && trendance.length) {
+  trendanceGrid.innerHTML = '';
+  // Afficher les 6 premiers articles au lieu de 3
+  trendance.slice(0, 6).forEach(article => {
+    trendanceGrid.innerHTML += `
+      <div class="blog-card bg-white overflow-hidden cursor-pointer border-2 border-black shadow-md" onclick="window.location.href='article.html?id=${article.id}'">
+        <div class="relative overflow-hidden h-48 border-b-2 border-black">
+          <img class="w-full h-full object-cover" src="${article.image}" alt="${article.title}" loading="lazy">
+          <div class="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 text-xs font-bold">${article.category}</div>
+        </div>
+        <div class="p-5">
+          <div class="flex items-center text-[10px] text-gray-400 gap-2 mb-2"><i class="far fa-calendar-alt"></i> ${article.date || ''} <span class="w-1 h-1 bg-gray-300 rounded-full"></span> <i class="far fa-clock"></i> ${article.read_time || '3'} min</div>
+          <h3 class="font-black text-base uppercase mb-2">${article.title}</h3>
+          <p class="text-gray-500 text-sm">${(article.excerpt || '').substring(0, 100)}...</p>
+          <div class="mt-4 flex justify-between items-center"><span class="text-xs text-gray-500">${article.author || 'Staff'}</span><a href="article.html?id=${article.id}" class="text-red-600 text-xs font-semibold">Lire →</a></div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+
+
+
+
+
+
+
+
+    // 4. MUSIQUE
+    const musique = await getArticlesByCategory('Musique');
+    const musiqueLayout = document.getElementById('musiqueLayout');
+    if (musiqueLayout && musique.length) {
+      const featuredDiv = musiqueLayout.querySelector('.candid-featured');
+      const main = musique[0];
+      if (featuredDiv && main) {
+        const img = featuredDiv.querySelector('img');
+        const title = featuredDiv.querySelector('.candid-featured-title');
+        const excerpt = featuredDiv.querySelector('.candid-featured-excerpt');
+        if (img) img.src = main.image;
+        if (title) { title.textContent = main.title; title.href = `article.html?id=${main.id}`; }
+        if (excerpt) excerpt.textContent = (main.excerpt || '').substring(0, 120) + '...';
+        featuredDiv.style.cursor = 'pointer';
+        featuredDiv.onclick = () => window.location.href = `article.html?id=${main.id}`;
+      }
+      const rightCards = musiqueLayout.querySelectorAll('.candid-right-card');
+      musique.slice(1, 5).forEach((art, idx) => {
+        if (rightCards[idx]) {
+          const img = rightCards[idx].querySelector('img');
+          const title = rightCards[idx].querySelector('.candid-right-card-title');
+          if (img) img.src = art.image;
+          if (title) { title.textContent = art.title; title.href = `article.html?id=${art.id}`; }
+          rightCards[idx].style.cursor = 'pointer';
+          rightCards[idx].onclick = () => window.location.href = `article.html?id=${art.id}`;
+        }
+      });
+    }
+
+    // 5. ACTU (carrousel)
+    const actu = await getArticlesByCategory('Actu');
+    const actuTrack = document.getElementById('carouselTrack');
+    if (actuTrack && actu.length) {
+      actuTrack.innerHTML = '';
+      actu.slice(0, 8).forEach(article => {
+        actuTrack.innerHTML += `
+          <div class="carousel-card cursor-pointer" onclick="window.location.href='article.html?id=${article.id}'">
+            <div class="card-image"><img src="${article.image}" alt="${article.title}"></div>
+            <div class="card-content">
+              <span class="card-category">${article.category.toUpperCase()}</span>
+              <div class="card-title">${article.title}</div>
+              <div class="card-footer"><span>★ ${article.read_time || '3'} min</span><a href="article.html?id=${article.id}" class="read-more">Read →</a></div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // 6. SPORT
+    const sport = await getArticlesByCategory('Sport');
+    const sportLayout = document.getElementById('sportLayout');
+    if (sportLayout && sport.length) {
+      const featuredDiv = sportLayout.querySelector('.candid-featured');
+      const main = sport[0];
+      if (featuredDiv && main) {
+        const img = featuredDiv.querySelector('img');
+        const title = featuredDiv.querySelector('.candid-featured-title');
+        const excerpt = featuredDiv.querySelector('.candid-featured-excerpt');
+        if (img) img.src = main.image;
+        if (title) { title.textContent = main.title; title.href = `article.html?id=${main.id}`; }
+        if (excerpt) excerpt.textContent = (main.excerpt || '').substring(0, 120) + '...';
+        featuredDiv.style.cursor = 'pointer';
+        featuredDiv.onclick = () => window.location.href = `article.html?id=${main.id}`;
+      }
+      const rightCards = sportLayout.querySelectorAll('.candid-right-card');
+      sport.slice(1, 5).forEach((art, idx) => {
+        if (rightCards[idx]) {
+          const img = rightCards[idx].querySelector('img');
+          const title = rightCards[idx].querySelector('.candid-right-card-title');
+          if (img) img.src = art.image;
+          if (title) { title.textContent = art.title; title.href = `article.html?id=${art.id}`; }
+          rightCards[idx].style.cursor = 'pointer';
+          rightCards[idx].onclick = () => window.location.href = `article.html?id=${art.id}`;
+        }
+      });
+    }
+
+    // 7. EVENT / FAIT DIVERS
+    let faitDivers = await getTrendingArticlesByCategory('Fait divers');
+    if (!faitDivers.length) faitDivers = await getArticlesByCategory('Fait divers');
+    const fdTrack = document.getElementById('carouselTrack2');
+    if (fdTrack && faitDivers.length) {
+      fdTrack.innerHTML = '';
+      faitDivers.slice(0, 8).forEach(article => {
+        fdTrack.innerHTML += `
+          <div class="carousel-card cursor-pointer" onclick="window.location.href='article.html?id=${article.id}'">
+            <div class="card-image"><img src="${article.image}" alt="${article.title}"></div>
+            <div class="card-content">
+              <span class="card-category">${article.category.toUpperCase()}</span>
+              <div class="card-title">${article.title}</div>
+              <div class="card-footer"><span>★ ${article.read_time || '3'} min</span><a href="article.html?id=${article.id}" class="read-more">Read →</a></div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+  // 8. POLITIQUE (version desktop complète + mobile)
+const politique = await getArticlesByCategory('Politique');
+console.log('📰 POLITIQUE: ' + politique.length + ' articles trouvés');
+
+if (politique.length > 0) {
+  // ===== VERSION DESKTOP =====
+  
+  // Carte 1 : card-featured (grande carte)
+  const featuredCard = document.getElementById('politiqueFeatured');
+  if (featuredCard && politique[0]) {
+    const a1 = politique[0];
+    const featImg = featuredCard.querySelector('.feat-img');
+    const featTitle = featuredCard.querySelector('.feat-title');
+    const featMeta = featuredCard.querySelector('.feat-meta');
+    if (featImg) featImg.style.backgroundImage = `url(${a1.image})`;
+    if (featTitle) featTitle.textContent = a1.title;
+    if (featMeta) featMeta.textContent = a1.date || '';
+    featuredCard.style.cursor = 'pointer';
+    featuredCard.onclick = () => window.location.href = `article.html?id=${a1.id}`;
+  }
+
+  // Carte 2 : card-tyler
+  if (politique[1]) {
+    const card2 = document.getElementById('politiqueCard2');
+    const a2 = politique[1];
+    if (card2) {
+      const imgDiv = card2.querySelector('.img');
+      const titleEl = card2.querySelector('.title');
+      const metaEl = card2.querySelector('.meta');
+      if (imgDiv) imgDiv.style.backgroundImage = `url(${a2.image})`;
+      if (titleEl) titleEl.textContent = a2.title;
+      if (metaEl) metaEl.textContent = a2.date || '';
+      card2.style.cursor = 'pointer';
+      card2.onclick = () => window.location.href = `article.html?id=${a2.id}`;
+    }
+  }
+
+  // Cartes 3, 4, 5 : row-bottom
+  const bottomCards = ['politiqueCard3', 'politiqueCard4', 'politiqueCard5'];
+  politique.slice(2, 5).forEach((article, idx) => {
+    const card = document.getElementById(bottomCards[idx]);
+    if (card && article) {
+      const imgDiv = card.querySelector('.img') || card.querySelector('.img-bg');
+      const titleEl = card.querySelector('.title') || card.querySelector('.title-white');
+      const metaEl = card.querySelector('.meta');
+      const subEl = card.querySelector('.sub-white');
+      if (imgDiv) imgDiv.style.backgroundImage = `url(${article.image})`;
+      if (titleEl) titleEl.textContent = article.title;
+      if (metaEl) metaEl.textContent = article.date || '';
+      if (subEl) subEl.textContent = (article.excerpt || '').substring(0, 60) + '...';
+      card.style.cursor = 'pointer';
+      card.onclick = () => window.location.href = `article.html?id=${article.id}`;
+    }
+  });
+
+  // ===== VERSION MOBILE =====
+  const polContainer = document.getElementById('politiqueMainArticles');
+  if (polContainer) {
+    const cards = polContainer.querySelectorAll('.article-card');
+    politique.slice(0, 5).forEach((art, idx) => {
+      if (cards[idx]) {
+        const img = cards[idx].querySelector('img');
+        const title = cards[idx].querySelector('.card-title');
+        const excerpt = cards[idx].querySelector('.card-excerpt');
+        const authorSpan = cards[idx].querySelector('.card-meta span');
+        if (img) img.src = art.image;
+        if (title) title.textContent = art.title;
+        if (excerpt) excerpt.textContent = (art.excerpt || '').substring(0, 100) + '...';
+        if (authorSpan) authorSpan.textContent = art.author || 'Staff';
+        cards[idx].href = `article.html?id=${art.id}`;
+      }
+    });
+  }
+} else {
+  console.log('⚠️ Aucun article dans la catégorie Politique');
+}
+
+
+
+
+
+
+
+
+  });
+</script>
+
+<script src="indexjs.js"></script>
+<script src="carousel.js"></script>
+</body>
+</html>

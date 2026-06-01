@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - Newsflash</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #cc0000;
+      --red-dark: #a00000;
+      --red-light: #fff0f0;
+      --bg: #f4f4f0;
+      --surface: #ffffff;
+      --border: #e8e4df;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-muted: #9b9590;
+      --cat-tendance: #cc0000; --cat-tendance-bg: #fff0f0;
+      --cat-musique: #7c3aed; --cat-musique-bg: #f5f0ff;
+      --cat-actu: #0369a1; --cat-actu-bg: #f0f7ff;
+      --cat-sport: #16a34a; --cat-sport-bg: #f0fdf4;
+      --cat-fait: #dc2626; --cat-fait-bg: #fef2f2;
+      --cat-politique: #1d4ed8; --cat-politique-bg: #eff6ff;
+      --cat-mode: #db2777; --cat-mode-bg: #fdf2f8;
+      --cat-tech: #0891b2; --cat-tech-bg: #f0fdfa;
+      --cat-celebrites: #d97706; --cat-celebrites-bg: #fffbeb;
+      --cat-cinema: #7c3aed; --cat-cinema-bg: #f5f0ff;
+      --cat-sante: #059669; --cat-sante-bg: #ecfdf5;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* ===== NAV ===== */
+    .main-nav {
+      background: #ffffff;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px;
+    }
+
+    .nav-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 0 10px;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo-img {
+      height: 80px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-admin-badge {
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-left: 12px;
+    }
+
+    .nav-links-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 10px 0;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links-row a {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links-row a:hover { color: var(--red); }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+    }
+
+    .page-header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .page-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-header h1 i { color: var(--red); font-size: 20px; }
+
+    /* ===== STATS ===== */
+    .stats-row {
+      max-width: 1440px;
+      margin: 24px auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .stat-icon.red { background: var(--red-light); color: var(--red); }
+    .stat-icon.amber { background: #fffbeb; color: #d97706; }
+    .stat-icon.blue { background: #eff6ff; color: #1d4ed8; }
+
+    .stat-num { font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main-layout {
+      max-width: 1440px;
+      margin: 0 auto 48px;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 960px) {
+      .main-layout { grid-template-columns: 1fr; padding: 0 16px; }
+      .stats-row { padding: 0 16px; }
+      .page-header { padding: 16px; }
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-header-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--red-light);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .card-header h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card-body { padding: 20px; }
+
+    /* ===== FORM ===== */
+    .form-group { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary);
+      background: #fafaf8;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--red);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(204,0,0,0.08);
+    }
+
+    textarea { min-height: 72px; resize: vertical; }
+
+    /* Row 2 col */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Upload */
+    .upload-zone {
+      border: 1.5px dashed #d8d4cf;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #fafaf8;
+      transition: all 0.2s;
+    }
+
+    .upload-zone:hover { border-color: var(--red); background: var(--red-light); }
+    .upload-zone i { font-size: 22px; color: var(--red); margin-bottom: 4px; display: block; }
+    .upload-zone p { font-size: 11px; color: var(--text-muted); }
+
+    .image-preview {
+      margin-top: 10px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .image-preview img {
+      width: 72px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .remove-img {
+      width: 22px;
+      height: 22px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Checkboxes */
+    .checkbox-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--red);
+      flex-shrink: 0;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: white;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.6; transform: none; }
+
+    .btn-slate {
+      background: #334155;
+      color: white;
+    }
+
+    .btn-slate:hover { background: #1e293b; }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover { border-color: var(--red); color: var(--red); }
+
+    /* Status */
+    .status {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .status.success { background: #dcfce7; color: #166534; display: block; }
+    .status.error { background: #fee2e2; color: #991b1b; display: block; }
+
+    hr { margin: 14px 0; border: none; border-top: 1px solid var(--border); }
+
+    /* ===== ARTICLES PANEL ===== */
+    .articles-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .articles-panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .articles-panel-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .articles-panel-header h2 i { color: var(--red); }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      padding: 0 16px;
+      scrollbar-width: none;
+    }
+
+    .tab-bar::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tab-btn:hover { color: var(--text-primary); }
+
+    .tab-btn.active {
+      color: var(--red);
+      border-bottom-color: var(--red);
+    }
+
+    .tab-count {
+      background: #f0ede8;
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+
+    .tab-btn.active .tab-count {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    /* Category sections inside tab */
+    .category-section {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-section:last-child { border-bottom: none; }
+
+    .cat-header {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .cat-header:hover { background: #fafaf8; }
+
+    .cat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cat-name {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex: 1;
+    }
+
+    .cat-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .cat-chevron {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+
+    .cat-chevron.open { transform: rotate(180deg); }
+
+    .cat-articles {
+      display: none;
+    }
+
+    .cat-articles.open { display: block; }
+
+    /* Article row */
+    .art-row {
+      padding: 10px 20px 10px 36px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border-top: 1px solid #f0ede8;
+      transition: background 0.15s;
+    }
+
+    .art-row:hover { background: #fafaf8; }
+
+    .art-thumb {
+      width: 52px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+      background: var(--border);
+    }
+
+    .art-info { flex: 1; min-width: 0; }
+
+    .art-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+
+    .art-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 1px 7px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .badge-featured { background: var(--red-light); color: var(--red); }
+    .badge-trending { background: #fffbeb; color: #d97706; }
+
+    .art-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover { color: var(--red); border-color: var(--red); background: var(--red-light); }
+    .icon-btn.delete:hover { color: #ef4444; border-color: #ef4444; background: #fef2f2; }
+
+    /* All articles flat list tab */
+    .flat-list .art-row { padding-left: 20px; }
+
+    /* Empty state */
+    .empty-cat {
+      padding: 16px 20px 16px 36px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid #f0ede8;
+    }
+
+    /* Loading */
+    .loading-state {
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* Search bar in panel */
+    .search-bar {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search-bar input {
+      background: #fafaf8;
+      padding: 8px 12px 8px 34px;
+      font-size: 12px;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    /* Ad section */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .ad-preview {
+      background: #fafaf8;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      min-height: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="nav-inner">
+    <div class="nav-logo-wrap">
+      <img src="images/dekalé.png" alt="Newsflash" class="nav-logo-img">
+      <span class="nav-admin-badge">Admin</span>
+    </div>
+    <ul class="nav-links-row">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="categorie.html?cat=Célébrités">Célébrités</a></li>
+      <li><a href="categorie.html?cat=Actu">News</a></li>
+      <li><a href="categorie.html?cat=Mode & Style">Mode &amp; Style</a></li>
+      <li><a href="categorie.html?cat=Tendance">Tendances</a></li>
+      <li><a href="categorie.html?cat=Boutique">Boutique</a></li>
+      <li><a href="categorie.html?cat=Diaries">Diaries</a></li>
+      <li><a href="categorie.html?cat=Partenaires">Partenaires</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1><i class="ti ti-layout-dashboard"></i> Tableau de bord</h1>
+    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-red-700 transition">
+      <i class="ti ti-logout"></i> Déconnexion
+    </button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="ti ti-article"></i></div>
+    <div>
+      <div class="stat-num" id="statArticles">0</div>
+      <div class="stat-lbl">Total articles</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon amber"><i class="ti ti-star"></i></div>
+    <div>
+      <div class="stat-num" id="statFeatured">0</div>
+      <div class="stat-lbl">À la une</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="ti ti-flame"></i></div>
+    <div>
+      <div class="stat-num" id="statTrending">0</div>
+      <div class="stat-lbl">Trending</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:#f0fdf4;color:#16a34a;"><i class="ti ti-category"></i></div>
+    <div>
+      <div class="stat-num" id="statCategories">0</div>
+      <div class="stat-lbl">Catégories</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- LEFT: FORM + AD -->
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-icon"><i class="ti ti-pencil"></i></div>
+        <h2>Nouvel article</h2>
+      </div>
+      <div class="card-body">
+        <div id="statusMessage" class="status"></div>
+
+        <form id="articleForm">
+          <div class="form-group">
+            <label>Titre de l'article</label>
+            <input type="text" id="title" required placeholder="Saisissez le titre…">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Catégorie</label>
+              <select id="category" required>
+                <option value="">Choisir…</option>
+                <option value="Tendance">🔥 Tendance</option>
+                <option value="Musique">🎵 Musique</option>
+                <option value="Actu">📰 Actu</option>
+                <option value="Sport">⚽ Sport</option>
+                <option value="Fait divers">🚨 Fait divers</option>
+                <option value="Politique">🏛️ Politique</option>
+                <option value="Mode & Style">👗 Mode &amp; Style</option>
+                <option value="Tech">💻 Tech</option>
+                <option value="Célébrités">⭐ Célébrités</option>
+                <option value="Cinéma">🎬 Cinéma</option>
+                <option value="Santé">🏥 Santé</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Auteur</label>
+              <input type="text" id="author" required placeholder="Nom de l'auteur">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Image de l'article</label>
+            <div class="upload-zone" id="uploadArea">
+              <i class="ti ti-cloud-upload"></i>
+              <p>Cliquez pour uploader (PNG, JPG – max 5 MB)</p>
+              <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+            </div>
+            <div class="image-preview" id="imagePreview">
+              <img id="previewImg" src="" alt="">
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px;" id="imgFileName">image.jpg</div>
+                <div class="remove-img" id="removeImage">✕</div>
+              </div>
+            </div>
+            <input type="hidden" id="imageUrl">
+          </div>
+
+          <div class="form-group">
+            <label>Extrait</label>
+            <textarea id="excerpt" required placeholder="Résumé court (150-200 caractères)…"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Contenu (HTML)</label>
+            <textarea id="content" style="min-height:100px;" required placeholder="<p>Contenu de l'article…</p>"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Tags</label>
+            <input type="text" id="tags" placeholder="#tag1, #tag2, #tag3">
+          </div>
+
+          <div class="checkbox-row" style="margin: 12px 0 16px;">
+            <label class="check-item"><input type="checkbox" id="featured"> ⭐ À la une (Hero)</label>
+            <label class="check-item"><input type="checkbox" id="trending"> 🔥 Trending (Carrousel)</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="ti ti-send"></i> Publier l'article
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ANNONCES -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-icon" style="background:#eff6ff;color:#1d4ed8;"><i class="ti ti-ad"></i></div>
+        <h2>Annonce publicitaire</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>Code HTML ou texte</label>
+          <textarea id="adContent" rows="2" placeholder="Votre annonce…"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>URL de l'image</label>
+            <input type="url" id="adImage" placeholder="https://…">
+          </div>
+          <div class="form-group">
+            <label>Lien de clic</label>
+            <input type="url" id="adLink" placeholder="https://…">
+          </div>
+        </div>
+        <div class="checkbox-row" style="margin-bottom:14px;">
+          <label class="check-item"><input type="checkbox" id="adActive"> Activer l'annonce</label>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button id="saveAdBtn" class="btn btn-slate"><i class="ti ti-device-floppy"></i> Sauvegarder</button>
+          <button id="clearAdBtn" class="btn btn-ghost"><i class="ti ti-trash"></i> Supprimer</button>
+        </div>
+        <hr>
+        <div class="section-label">Annonce active</div>
+        <div id="currentAdDisplay" class="ad-preview">Aucune annonce active</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: ARTICLES PANEL -->
+  <div class="articles-panel">
+    <div class="articles-panel-header">
+      <h2><i class="ti ti-news"></i> Articles publiés</h2>
+    </div>
+
+    <div class="search-bar">
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher un article…">
+      </div>
+    </div>
+
+    <div class="tab-bar" id="tabBar">
+      <button class="tab-btn active" data-tab="categories" onclick="switchTab('categories', this)">
+        <i class="ti ti-category"></i> Par catégorie <span class="tab-count" id="tc-cat">0</span>
+      </button>
+      <button class="tab-btn" data-tab="all" onclick="switchTab('all', this)">
+        <i class="ti ti-list"></i> Tous <span class="tab-count" id="tc-all">0</span>
+      </button>
+      <button class="tab-btn" data-tab="featured" onclick="switchTab('featured', this)">
+        <i class="ti ti-star"></i> À la une <span class="tab-count" id="tc-feat">0</span>
+      </button>
+      <button class="tab-btn" data-tab="trending" onclick="switchTab('trending', this)">
+        <i class="ti ti-flame"></i> Trending <span class="tab-count" id="tc-trend">0</span>
+      </button>
+    </div>
+
+    <div id="articlesContainer">
+      <div class="loading-state"><i class="ti ti-loader"></i> Chargement…</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="supabase-config.js"></script>
+<script>
+  function logout() {
+    localStorage.removeItem('admin_logged_in');
+    localStorage.removeItem('admin_email');
+    window.location.href = 'admin-login.html';
+  }
+
+  // ——— State ———
+  let currentArticles = [];
+  let currentTab = 'categories';
+  let searchQuery = '';
+
+  // ——— Category config ———
+  const CATS = {
+    'Tendance':    { color: '#cc0000', bg: '#fff0f0', emoji: '🔥' },
+    'Musique':     { color: '#7c3aed', bg: '#f5f0ff', emoji: '🎵' },
+    'Actu':        { color: '#0369a1', bg: '#f0f7ff', emoji: '📰' },
+    'Sport':       { color: '#16a34a', bg: '#f0fdf4', emoji: '⚽' },
+    'Fait divers': { color: '#dc2626', bg: '#fef2f2', emoji: '🚨' },
+    'Politique':   { color: '#1d4ed8', bg: '#eff6ff', emoji: '🏛️' },
+    'Mode & Style':{ color: '#db2777', bg: '#fdf2f8', emoji: '👗' },
+    'Tech':        { color: '#0891b2', bg: '#f0fdfa', emoji: '💻' },
+    'Célébrités':  { color: '#d97706', bg: '#fffbeb', emoji: '⭐' },
+    'Cinéma':      { color: '#7c3aed', bg: '#f5f0ff', emoji: '🎬' },
+    'Santé':       { color: '#059669', bg: '#ecfdf5', emoji: '🏥' },
+  };
+
+  function getCatStyle(cat) {
+    return CATS[cat] || { color: '#6b6560', bg: '#f4f4f0', emoji: '📄' };
+  }
+
+  // ——— Image upload ———
+  const uploadArea   = document.getElementById('uploadArea');
+  const imageUpload  = document.getElementById('imageUpload');
+  const imagePreview = document.getElementById('imagePreview');
+  const previewImg   = document.getElementById('previewImg');
+  const imageUrlInput= document.getElementById('imageUrl');
+
+  uploadArea.addEventListener('click', () => imageUpload.click());
+
+  imageUpload.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { showMessage('❌ Image invalide', 'error'); return; }
+
+    const reader = new FileReader();
+    reader.onload = ev => { previewImg.src = ev.target.result; imagePreview.style.display = 'flex'; document.getElementById('imgFileName').textContent = file.name; };
+    reader.readAsDataURL(file);
+
+    const fileName = `${Date.now()}_${file.name}`;
+    try {
+      const { error } = await supabaseClient.storage.from('articles-images').upload(fileName, file);
+      if (error) throw error;
+      const { data: pub } = supabaseClient.storage.from('articles-images').getPublicUrl(fileName);
+      imageUrlInput.value = pub.publicUrl;
+      showMessage('✅ Image uploadée', 'success');
+    } catch { showMessage('❌ Erreur upload image', 'error'); }
+  });
+
+  document.getElementById('removeImage').addEventListener('click', () => {
+    imagePreview.style.display = 'none';
+    imageUrlInput.value = '';
+    imageUpload.value = '';
+    previewImg.src = '';
+  });
+
+  // ——— Ad ———
+  function loadAd() {
+    const adData = localStorage.getItem('newsflash_ad');
+    const display = document.getElementById('currentAdDisplay');
+    if (adData) {
+      const ad = JSON.parse(adData);
+      display.innerHTML = ad.content || (ad.image ? `<img src="${ad.image}" style="max-width:100%;border-radius:6px;">` : 'Aucune annonce');
+    } else {
+      display.innerHTML = 'Aucune annonce active';
+    }
+  }
+
+  document.getElementById('saveAdBtn').addEventListener('click', () => {
+    const ad = {
+      content: document.getElementById('adContent').value,
+      image:   document.getElementById('adImage').value,
+      link:    document.getElementById('adLink').value,
+      active:  document.getElementById('adActive').checked
+    };
+    localStorage.setItem('newsflash_ad', JSON.stringify(ad));
+    showMessage('✅ Annonce sauvegardée', 'success');
+    loadAd();
+  });
+
+  document.getElementById('clearAdBtn').addEventListener('click', () => {
+    localStorage.removeItem('newsflash_ad');
+    ['adContent','adImage','adLink'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('adActive').checked = false;
+    loadAd();
+    showMessage('✅ Annonce supprimée', 'success');
+  });
+
+  // ——— Helpers ———
+  function escapeHtml(t) {
+    if (!t) return '';
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+  }
+
+  function showMessage(msg, type) {
+    const el = document.getElementById('statusMessage');
+    el.textContent = msg;
+    el.className = `status ${type}`;
+    setTimeout(() => { el.style.display = 'none'; el.className = 'status'; }, 3000);
+  }
+
+  // ——— Render helpers ———
+  function artRowHtml(article) {
+    const style = getCatStyle(article.category);
+    const badges = [
+      article.featured ? '<span class="badge badge-featured">⭐ Une</span>' : '',
+      article.trending ? '<span class="badge badge-trending">🔥 Trend</span>' : ''
+    ].filter(Boolean).join('');
+    const thumb = article.image
+      ? `<img class="art-thumb" src="${escapeHtml(article.image)}" alt="" loading="lazy">`
+      : `<div class="art-thumb" style="display:flex;align-items:center;justify-content:center;background:#f0ede8;font-size:18px;">${style.emoji}</div>`;
+
+    return `
+      <div class="art-row">
+        ${thumb}
+        <div class="art-info">
+          <div class="art-title">${escapeHtml(article.title)}</div>
+          <div class="art-meta">
+            <span>${article.author || 'Auteur'}</span>
+            <span style="color:#d8d4cf;">•</span>
+            <span>${article.date || ''}</span>
+            ${badges}
+          </div>
+        </div>
+        <div class="art-actions">
+          <a href="article.html?id=${article.id}" target="_blank" class="icon-btn" title="Voir"><i class="ti ti-eye"></i></a>
+          <button onclick="deleteArticleById(${article.id})" class="icon-btn delete" title="Supprimer"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`;
+  }
+
+  function renderCategories(articles) {
+    if (!articles.length) return '<div class="loading-state">Aucun article</div>';
+
+    const grouped = {};
+    articles.forEach(a => {
+      const cat = a.category || 'Autre';
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(a);
+    });
+
+    const catOrder = Object.keys(CATS);
+    const sortedCats = [
+      ...catOrder.filter(c => grouped[c]),
+      ...Object.keys(grouped).filter(c => !catOrder.includes(c))
+    ];
+
+    return sortedCats.map(cat => {
+      const items = grouped[cat];
+      const style = getCatStyle(cat);
+      const isOpen = true;
+      const sectionId = `cat_${cat.replace(/\W/g, '_')}`;
+
+      return `
+        <div class="category-section">
+          <div class="cat-header" onclick="toggleCat('${sectionId}', this)">
+            <div class="cat-dot" style="background:${style.color};"></div>
+            <span class="cat-name" style="color:${style.color};">${style.emoji} ${cat}</span>
+            <span class="cat-badge" style="background:${style.bg};color:${style.color};">${items.length} article${items.length>1?'s':''}</span>
+            <i class="ti ti-chevron-down cat-chevron open"></i>
+          </div>
+          <div class="cat-articles open" id="${sectionId}">
+            ${items.map(a => artRowHtml(a)).join('')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderFlat(articles, labelKey) {
+    if (!articles.length) return '<div class="loading-state">Aucun article</div>';
+    return `<div class="flat-list">${articles.map(a => artRowHtml(a)).join('')}</div>`;
+  }
+
+  function renderPanel() {
+    const q = searchQuery.toLowerCase();
+    let list = q
+      ? currentArticles.filter(a =>
+          (a.title||'').toLowerCase().includes(q) ||
+          (a.category||'').toLowerCase().includes(q) ||
+          (a.author||'').toLowerCase().includes(q))
+      : currentArticles;
+
+    const container = document.getElementById('articlesContainer');
+
+    if (currentTab === 'categories') {
+      container.innerHTML = renderCategories(list);
+    } else if (currentTab === 'all') {
+      container.innerHTML = renderFlat(list);
+    } else if (currentTab === 'featured') {
+      container.innerHTML = renderFlat(list.filter(a => a.featured));
+    } else if (currentTab === 'trending') {
+      container.innerHTML = renderFlat(list.filter(a => a.trending));
+    }
+  }
+
+  function toggleCat(id, header) {
+    const el = document.getElementById(id);
+    const chevron = header.querySelector('.cat-chevron');
+    if (el.classList.contains('open')) {
+      el.classList.remove('open');
+      chevron.classList.remove('open');
+    } else {
+      el.classList.add('open');
+      chevron.classList.add('open');
+    }
+  }
+
+  function switchTab(tab, btn) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderPanel();
+  }
+
+  function updateStats() {
+    document.getElementById('statArticles').textContent = currentArticles.length;
+    document.getElementById('statFeatured').textContent = currentArticles.filter(a => a.featured).length;
+    document.getElementById('statTrending').textContent = currentArticles.filter(a => a.trending).length;
+
+    const cats = new Set(currentArticles.map(a => a.category).filter(Boolean));
+    document.getElementById('statCategories').textContent = cats.size;
+
+    document.getElementById('tc-cat').textContent  = currentArticles.length;
+    document.getElementById('tc-all').textContent  = currentArticles.length;
+    document.getElementById('tc-feat').textContent = currentArticles.filter(a => a.featured).length;
+    document.getElementById('tc-trend').textContent= currentArticles.filter(a => a.trending).length;
+  }
+
+  async function loadArticles() {
+    document.getElementById('articlesContainer').innerHTML = '<div class="loading-state"><i class="ti ti-loader"></i> Chargement…</div>';
+    try {
+      currentArticles = await getAllArticles();
+      updateStats();
+      renderPanel();
+    } catch {
+      document.getElementById('articlesContainer').innerHTML = '<div class="loading-state" style="color:#ef4444;">Erreur de chargement</div>';
+    }
+  }
+
+  async function deleteArticleById(id) {
+    if (!confirm('Supprimer cet article ?')) return;
+    const success = await deleteArticle(id);
+    if (success) { showMessage('✅ Article supprimé', 'success'); await loadArticles(); }
+    else showMessage('❌ Erreur lors de la suppression', 'error');
+  }
+
+  // Search
+  document.getElementById('searchInput').addEventListener('input', e => {
+    searchQuery = e.target.value;
+    renderPanel();
+  });
+
+  // Form submit
+  document.getElementById('articleForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const imageUrl = imageUrlInput.value;
+    if (!imageUrl) { showMessage('❌ Veuillez uploader une image', 'error'); return; }
+
+    const newArticle = {
+      title:    document.getElementById('title').value.trim(),
+      category: document.getElementById('category').value,
+      author:   document.getElementById('author').value.trim(),
+      excerpt:  document.getElementById('excerpt').value.trim(),
+      content:  document.getElementById('content').value.trim(),
+      image:    imageUrl,
+      readTime: (Math.floor(Math.random() * 8) + 3) + ' min',
+      tags:     document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean),
+      featured: document.getElementById('featured').checked,
+      trending: document.getElementById('trending').checked
+    };
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ti ti-loader"></i> Publication…';
+
+    const result = await addArticle(newArticle);
+    if (result) {
+      showMessage('✅ Article publié !', 'success');
+      e.target.reset();
+      imagePreview.style.display = 'none';
+      imageUrlInput.value = '';
+      await loadArticles();
+    } else {
+      showMessage('❌ Erreur lors de la publication', 'error');
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-send"></i> Publier l\'article';
+  });
+
+  // Init
+  loadArticles();
+  loadAd();
+</script>
+</body>
+</html>
